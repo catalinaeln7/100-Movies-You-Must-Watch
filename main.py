@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from tkinter import *
+from tkinter import Tk, PhotoImage, Canvas, Label, Button, messagebox
+import random
 
 # -------------------------------- CONSTANTS -----------------------------------------
 HEADER_FONT_STYLE = ("Roboto", 20, "bold")
@@ -11,18 +12,26 @@ BACKGROUND_COLOR = "#171717"
 RED_ISH_COLOR = "#DA0037"
 TEXT_COLOR = "white"
 
+chosen_movie = None
+
 
 # -------------------------------- FUNCTIONS -----------------------------------------
 def pick_movie():
-    pass
+    global chosen_movie
+    chosen_movie = random.choice(movies)
+    button_pick_movie.config(text="Maybe...something else?")
+    label_picked_movie.config(text=chosen_movie.encode("utf-8"), fg="#222222", wraplength=300)
 
 
 def already_seen():
-    pass
+    movies.remove(chosen_movie)
+    pick_movie()
 
 
 def brb():
-    pass
+    movies.remove(chosen_movie)
+    messagebox.showinfo(title="Great!", message=f'Enjoy watching "{chosen_movie}"!')
+    window.destroy()
 
 
 # -------------------------------- WEB SCRAPING --------------------------------------
@@ -66,15 +75,15 @@ canvas.create_image(100, 150, image=popcorn_image)
 canvas.grid(column=0, row=1, rowspan=3)
 
 header_label = Label(text="In need of a movie?", bg=RED_ISH_COLOR, font=HEADER_FONT_STYLE, fg=TEXT_COLOR,
-                     padx=290, pady=10)
+                     padx=300, pady=10)
 header_label.grid(column=0, row=0, columnspan=3, pady=50)
 
 button_pick_movie = Button(text="⭐ Give me something good! ⭐", command=pick_movie, font=BUTTON_FONT_STYLE,
-                           bg="#222222", fg="white", padx=75, pady=10)
+                           bg="#222222", fg="white", pady=10, width=42)
 button_pick_movie.grid(column=1, row=1, columnspan=2)
 
-label_picked_movie = Label(text="Movie title will be displayed here", font=LABEL_FONT_STYLE, padx=35, pady=40,
-                           fg="#AAAAAA")
+label_picked_movie = Label(text="Movie title will be displayed here", font=LABEL_FONT_STYLE,
+                           fg="#AAAAAA", width=30, height=3)
 label_picked_movie.grid(column=1, row=2, columnspan=2)
 
 button_brb = Button(text="BRB gonna watch it!", command=brb, bg=RED_ISH_COLOR, fg="white", padx=15, pady=10,
@@ -86,3 +95,7 @@ button_already_seen = Button(text="I've already seen that..", command=already_se
 button_already_seen.grid(column=2, row=3)
 
 window.mainloop()
+
+with open("movies.txt", mode="w") as file:
+    for movie_title in movies:
+        file.write(f"{movie_title}\n")
