@@ -3,13 +3,25 @@ from bs4 import BeautifulSoup
 from tkinter import *
 
 # -------------------------------- CONSTANTS -----------------------------------------
-BACKGROUND_COLOR = "#F48660"
-FONT_STYLE = ("Arial", 26, "bold")
-TEXT_COLOR = "#ECE2D0"
+HEADER_FONT_STYLE = ("Roboto", 20, "bold")
+LABEL_FONT_STYLE = ("Roboto", 18)
+BUTTON_FONT_STYLE = ("Roboto", 13, "bold")
+
+BACKGROUND_COLOR = "#171717"
+RED_ISH_COLOR = "#DA0037"
+TEXT_COLOR = "white"
 
 
 # -------------------------------- FUNCTIONS -----------------------------------------
 def pick_movie():
+    pass
+
+
+def already_seen():
+    pass
+
+
+def brb():
     pass
 
 
@@ -30,7 +42,7 @@ def empire_scraping():
             movie_file.write(f"{movie_title}\n")
 
 
-# --------------------------------- GUI SET ------------------------------------------
+# --------------------------------- GUI SETUP -----------------------------------------
 movies = []
 
 try:
@@ -44,17 +56,33 @@ else:
 
 window = Tk()
 window.title("100 Movies You Must Watch")
-window.config(padx=70, pady=50, width="600px", height="300px", bg=BACKGROUND_COLOR)
+window.config(padx=70, width="600px", height="500px", bg=BACKGROUND_COLOR)
+window.minsize(300, 470)
 
 popcorn_image = PhotoImage(file="popcorn.png")
 popcorn_image = popcorn_image.subsample(2, 2)
 canvas = Canvas(bg=BACKGROUND_COLOR, highlightthickness=0)
 canvas.create_image(100, 150, image=popcorn_image)
-canvas.grid(column=0, row=0, rowspan=3)
+canvas.grid(column=0, row=1, rowspan=3)
 
-header_label = Label(text="In need of a movie?", bg=TEXT_COLOR, font=FONT_STYLE, fg="black", padx=15, pady=15)
-header_label.grid(column=1, row=0)
+header_label = Label(text="In need of a movie?", bg=RED_ISH_COLOR, font=HEADER_FONT_STYLE, fg=TEXT_COLOR,
+                     padx=290, pady=10)
+header_label.grid(column=0, row=0, columnspan=3, pady=50)
 
-button_pick_movie = Button(text="Give me something good!", command=pick_movie)
+button_pick_movie = Button(text="⭐ Give me something good! ⭐", command=pick_movie, font=BUTTON_FONT_STYLE,
+                           bg="#222222", fg="white", padx=75, pady=10)
+button_pick_movie.grid(column=1, row=1, columnspan=2)
+
+label_picked_movie = Label(text="Movie title will be displayed here", font=LABEL_FONT_STYLE, padx=35, pady=40,
+                           fg="#AAAAAA")
+label_picked_movie.grid(column=1, row=2, columnspan=2)
+
+button_brb = Button(text="BRB gonna watch it!", command=brb, bg=RED_ISH_COLOR, fg="white", padx=15, pady=10,
+                    font=BUTTON_FONT_STYLE)
+button_brb.grid(column=1, row=3)
+
+button_already_seen = Button(text="I've already seen that..", command=already_seen, bg=RED_ISH_COLOR, fg="white",
+                             padx=15, pady=10, font=BUTTON_FONT_STYLE)
+button_already_seen.grid(column=2, row=3)
 
 window.mainloop()
